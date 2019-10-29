@@ -58,5 +58,22 @@ function start() {
         buyItems(itemID, itemQuant);
     })
 };
+function buyItems(itemID, itemQuant) {
+    connection.query("SELECT * FROM products WHERE item_id = " + itemID, function(err, res) {
+        if(err) {
+            console.log(err);
+        }
+        if(itemQuant <= res[0].stock_quantity) {
+            var totalCost = res[0].price * itemQuant;
+            console.log("Your items have successfully been added to your cart!");
+            console.log("Your total will be: " + "$" + totalCost);
+            connection.query("UPDATE products SET stock_quantity = stock_quantity - " + itemQuant + "WHERE item_id = " + itemID);
+        }
+        else {
+            console.log("Insufficient quantity! Sorry, we do not have enough of that item in stock to complete your purchase."); 
+        }
+        displayProducts();
+    })
+}
 
 displayProducts(); 
