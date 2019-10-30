@@ -75,7 +75,4 @@ function buyItems(id, amtOrdered) {
         displayProducts();
     })
 }
-
 displayProducts(); 
-
-//` ${} `
