@@ -48,7 +48,7 @@ function start() {
             {
                 name:"Quantity",
                 type:"input",
-                message:"How many items would you like to purchase?",
+                message:"How many of these items would you like to purchase?",
                 filter:Number
             }
     ])
@@ -58,16 +58,16 @@ function start() {
         buyItems(itemID, itemQuant);
     })
 };
-function buyItems(itemID, itemQuant) {
-    connection.query("SELECT * FROM products WHERE item_id = " + itemID, function(err, res) {
+function buyItems(id, amtOrdered) {
+    connection.query("SELECT * FROM products WHERE item_id = " + id, function(err, res) {
         if(err) {
             console.log(err);
         }
-        if(itemQuant <= res[0].stock_quantity) {
-            var totalCost = res[0].price * itemQuant;
+        if(amtOrdered <= res[0].stock_quantity) {
+            var totalCost = res[0].price * amtOrdered;
             console.log("Your items have successfully been added to your cart!");
-            console.log("Your total will be: " + "$" + totalCost);
-            connection.query("UPDATE products SET stock_quantity = stock_quantity - " + itemQuant + "WHERE item_id = " + itemID);
+            console.log(`Your total will be: $${totalCost}`);
+            connection.query(`UPDATE products SET stock_quantity = stock_quantity - ${amtOrdered} WHERE item_id = ${id}`);
         }
         else {
             console.log("Insufficient quantity! Sorry, we do not have enough of that item in stock to complete your purchase."); 
@@ -77,3 +77,5 @@ function buyItems(itemID, itemQuant) {
 }
 
 displayProducts(); 
+
+//` ${} `
